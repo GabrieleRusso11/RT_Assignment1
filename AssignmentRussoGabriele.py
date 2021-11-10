@@ -1,0 +1,284 @@
+from __future__ import print_function
+import time
+import math
+from sr.robot import *
+
+"""_____________Variables_____________"""
+
+""" Threshold for the control of the orientation """
+a_th = 4.0 
+""" Threshold for the control of the linear distance """
+d_th = 0.4
+""" Instance of the class Robot """
+R = Robot()
+
+"""______________Robot Moving Functions_______________"""
+
+"""
+drive is a function for setting a linear velocity
+Arg : speed (init) is the speed of the wheels
+
+""" 
+def drive(speed):
+    R.motors[0].m0.power = speed
+    R.motors[0].m1.power = speed
+
+"""
+stop is a function for stopping the robot's motors 
+setting their velocity to zero
+Arg : no arguments
+
+"""
+def stop() : 
+    R.motors[0].m0.power = 0
+    R.motors[0].m1.power = 0
+
+"""
+reverse is a function for reversing the direction 
+of travel
+Arg : speed (int) is the speed of the wheels
+      seconds (int) is the time interval before
+      stopping the motors
+"""
+def reverse(speed,seconds) : 
+    drive(-speed)
+    time.sleep(seconds)
+    stop()
+
+"""
+turn is a function for setting the robot angular 
+velocity
+Arg : speed (int) is the speed of the wheels
+      seconds (int) is the time interval before
+      stopping the motors
+"""
+def turn(speed,seconds) :
+    R.motors[0].m0.power = speed
+    R.motors[0].m1.power = -speed
+    time.sleep(seconds)
+    R.motors[0].m0.power = 0
+    R.motors[0].m1.power = 0
+
+"""______________Orientation Functions_______________"""
+
+"""
+Angle is a function which returns the robot angular position 
+through the robot library function heading  
+
+"""
+
+def angle() :
+    return (R.heading*(180/math.pi)) #heading gives the angle in radiants
+    #so I convert it in degrees
+
+def alignment_0() :
+    while not(-4 <= angle() <= 4) :
+        if right_dist_g() > left_dist_g() :
+            print("I turn on the right to avoid the walls")
+            turn(15,0.1)
+        else :
+            print("I turn on the left to avoid the walls.")  
+            turn(-15,0.1)
+            
+
+def alignment_90() :
+    while not(86 <= angle() <= 94) :
+        if right_dist_g() > left_dist_g() :
+            print("I turn on the right to avoid the walls")
+            turn(15,0.1)
+        else :
+            print("I turn on the left to avoid the walls")
+            turn(-15,0.1)
+            
+
+def alignment_minus_90() :
+    while not(-94 <= angle() <= -86) : 
+        if right_dist_g() > left_dist_g() :
+            print("I turn on the right to avoid the walls")
+            turn(15,0.1)
+        else :
+            print("I turn on the left to avoid the walls")
+            turn(-15,0.1)
+            
+
+def alignment_180() :
+    while (-176 <= angle() <= 176) :
+        if right_dist_g() > left_dist_g() :
+            print("I turn on the right to avoid the walls")
+            turn(15,0.1)
+        else :
+            print("I turn on the left to avoid the walls")
+            turn(-15,0.1)
+            
+
+def rotate_0() :
+    while not(-4 <= angle() <= 4) :
+        turn(15,0.1)
+
+def rotate_90() :
+    while not(86 <= angle() <= 94) :
+        turn(15,0.1)
+
+def rotate_minus_90() :
+    while not(-94 <= angle() <= -86) :
+        turn(15,0.1)
+
+def rotate_180() :
+    while (-176 <= angle() <= 176) :
+        turn(15,0.1)
+
+def semicircle() :
+    if -30 <= angle() <= 30 :
+        rotate_180()
+    elif -120 <= angle() <= -60 :
+        rotate_90()
+    elif not(-150 <= angle() <= 150) :
+        rotate_0()
+    elif 60 <= angle() <= 120 :
+        rotate_minus_90()
+
+"""_____________Token Management Functions______________"""
+
+"""
+find_silver_token is a function used to find the 
+closest silver token
+Returns : dist (float) is the distance of the closest 
+          silver token (-1 if no silver token is detected ) 
+          rot_y (float) is the angle between the robot 
+          and the silver token (-1 if no silver token 
+          is detected ) 
+"""
+def find_silver_token() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER :
+            dist = token.dist
+        if  -20 <= token.rot_y <= 20 :
+            rot_y = token.rot_y
+    if dist == 100 : 
+        return -1, -1
+    else :
+        return dist, rot_y
+
+def find_golden_token() :
+    dist = 100
+    for  token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD :
+            dist = token.dist
+        if  -90 <= token.rot_y <= 90 :
+            rot_y = token.rot_y
+    if dist == 100 :
+        return -1, -1
+    else :
+        return dist, rot_y
+
+"""
+take_silver_token is function used to first grab a 
+silver token,second rotate the robot 180 degrees
+then release the silver token and finally rotate the 
+robot 180 degrees again.
+Arg : dist (float) is the distance of the closest 
+      silver token 
+      rot_y (float) is the angle between the robot 
+      and the silver token 
+"""
+def take_silver_token(d_g,rot) :
+    if front_dist_s() < d_th and -a_th <= rot <= a_th :
+        stop()
+        if R.grab() :
+            time.sleep(1)
+            semicircle()
+            R.release()
+            reverse(25,1)
+            semicircle()
+            drive(60)
+    if front_dist_s() < d_g and abs(rot) <= 90 :   
+        if abs(rot) <= a_th :
+            drive(60)
+        else :    
+            if rot < 0 : # if the robot is not well aligned with the token, we move it on the left or on the right
+                print("Left a bit...")
+                print("I am in silver")
+                turn(-4,0.5)
+            elif rot > 0 : 
+                print("Right a bit..")
+                print("I am in silver")
+                turn(4,0.5)
+
+def avoid_golden_token(dist,rot) :
+    if right_dist_g() < 0.7 or left_dist_g() < 0.7:
+        print(rot)
+        if  rot < 0: # if the robot is not well aligned with the token, we move it on the left or on the right
+            print("right a bit...")
+            print("I am in golden")
+            turn(-4, 0.5)
+            
+        elif rot > 0 :
+            print("left a bit...")
+            print("I am in golden")
+            turn(4, 0.5)
+   
+    if front_dist_g() < 1 : #the robot has a golden token wall in front it,
+                          #so now it checks if it has to turn left or right
+        if right_dist_g() > left_dist_g() : #turn right
+            print("I have found a wall in front to me and on my left")
+            if -100 <= angle() <= -80 :
+                alignment_0()
+            elif -10 <= angle() <= 10 :
+                alignment_90()
+            elif 80 <= angle() <= 100 :
+                alignment_0()
+            drive(80)
+        else :
+            print("I have found a wall in front to me and on my right")
+            if 80 <= angle() <= 100 :
+                alignment_0()
+            elif -10 <= angle() <= 10:
+                alignment_minus_90()
+            elif -100 <= angle() <= -80 :
+                alignment_180()
+            else :
+                alignment_90()
+            drive(80)
+             
+def front_dist_s():
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER and -35 < token.rot_y < 35 :
+            dist = token.dist
+    return dist
+
+def front_dist_g():
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -30 < token.rot_y < 30 :
+            dist = token.dist
+    return dist
+
+def right_dist_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and 80 < token.rot_y < 100 :
+            dist = token.dist
+    return dist
+
+def left_dist_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -100 < token.rot_y < -80 :
+            dist = token.dist
+    return dist
+
+def main() :
+
+    time.sleep(3)
+    while(1) :
+        dist_s, rot_s = find_silver_token()
+        dist_g, rot_g = find_golden_token()
+        drive(60)
+        
+        take_silver_token(dist_g,rot_s)
+        avoid_golden_token(dist_g,rot_g)
+        
+main()
+    
