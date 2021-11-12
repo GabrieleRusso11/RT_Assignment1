@@ -3,7 +3,7 @@ import time
 import math
 from sr.robot import *
 
-"""_____________Variables_____________"""
+"""------------------------Variables---------------------------"""
 
 """ Threshold for the control of the orientation """
 a_th = 4.0 
@@ -12,10 +12,10 @@ d_th = 0.4
 """ Instance of the class Robot """
 R = Robot()
 
-"""______________Robot Moving Functions_______________"""
+"""-------------------Robot Moving Functions--------------------"""
 
 """
-drive is a function for setting a linear velocity
+drive is a function used to set a linear velocity
 Arg : speed (init) is the speed of the wheels
 
 """ 
@@ -24,7 +24,7 @@ def drive(speed):
     R.motors[0].m1.power = speed
 
 """
-stop is a function for stopping the robot's motors 
+stop is a function used to stop the robot's motors 
 setting their velocity to zero
 Arg : no arguments
 
@@ -34,7 +34,7 @@ def stop() :
     R.motors[0].m1.power = 0
 
 """
-reverse is a function for reversing the direction 
+reverse is a function used to reverse the direction 
 of travel
 Arg : speed (int) is the speed of the wheels
       seconds (int) is the time interval before
@@ -46,7 +46,7 @@ def reverse(speed,seconds) :
     stop()
 
 """
-turn is a function for setting the robot angular 
+turn is a function used to setting the robot angular 
 velocity
 Arg : speed (int) is the speed of the wheels
       seconds (int) is the time interval before
@@ -59,18 +59,25 @@ def turn(speed,seconds) :
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
 
-"""______________Orientation Functions_______________"""
+"""---------------------Orientation Functions-----------------------"""
 
 """
 Angle is a function which returns the robot angular position 
 through the robot library function heading  
 
 """
-
 def angle() :
     return (R.heading*(180/math.pi)) #heading gives the angle in radiants
     #so I convert it in degrees
 
+"""
+alignment_0, alignment_90, alignment_180 and alignment_minus_90
+are functions used to align the robot using the heading function 
+included in the robot library.
+Each function align the robot to a specific angle obteined by
+heading function (0, 90, -90, and 180)
+
+"""
 def alignment_0() :
     print_1 = 0
     while not(-4 <= angle() <= 4) :
@@ -170,7 +177,7 @@ def semicircle() :
     elif 50 <= angle() <= 130 :
         rotate_minus_90()
 
-"""_____________Token Management Functions______________"""
+"""-----------------Token Management Functions-------------------"""
 
 """
 find_silver_token is a function used to find the 
@@ -183,11 +190,9 @@ Returns : dist (float) is the distance of the closest
 """
 def find_silver_token() :
     dist = 100
-   # rot_y = 360
     for token in R.see() :
         if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER :
             dist = token.dist
-            #if abs(token.rot_y) < abs(rot_y) :
             rot_y = token.rot_y
     if dist == 100 : 
         return -1, -1
@@ -196,11 +201,9 @@ def find_silver_token() :
 
 def find_golden_token() :
     dist = 100
-    #rot_y = 360
     for  token in R.see() :
         if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD :
             dist = token.dist
-            #if abs(token.rot_y) < abs(rot_y) :
             rot_y = token.rot_y
     if dist == 100 :
         return -1, -1
@@ -291,6 +294,8 @@ def avoid_golden_token(dist,rot) :
             print("I have to turn left a bit to avoid them")
             print("++++++++++++++++++++++++++++++++++++++++++++++")
             turn(-4, 0.5)
+
+"""----------------------Distance Functions------------------------"""
              
 def front_dist_s():
     dist = 100
