@@ -12,8 +12,6 @@ d_th = 0.4
 """ Instance of the class Robot """
 R = Robot()
 
-global print_1
-
 """______________Robot Moving Functions_______________"""
 
 """
@@ -223,6 +221,9 @@ def take_silver_token(d_g,rot) :
     if front_dist_s() < d_th and -a_th <= rot <= a_th :
         stop()
         if R.grab() :
+            print("-----------------------------------")
+            print("I have grabbed the silver token.")
+            print("-----------------------------------")
             time.sleep(1)
             semicircle()
             R.release()
