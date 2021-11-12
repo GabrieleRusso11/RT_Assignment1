@@ -12,6 +12,8 @@ d_th = 0.4
 """ Instance of the class Robot """
 R = Robot()
 
+global print_1
+
 """______________Robot Moving Functions_______________"""
 
 """
@@ -72,42 +74,75 @@ def angle() :
     #so I convert it in degrees
 
 def alignment_0() :
+    print_1 = 0
     while not(-4 <= angle() <= 4) :
         if right_dist_g() > left_dist_g() :
-            print("I turn on the right to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("****************************************")
+                print("I turn on the right to avoid the walls")
+                print("****************************************")
             turn(15,0.1)
         else :
-            print("I turn on the left to avoid the walls.")  
+            if print_1 == 0 :
+                print_1 = 1
+                print("***************************************")
+                print("I turn on the left to avoid the walls.")
+                print("***************************************")  
             turn(-15,0.1)
             
-
 def alignment_90() :
+    print_1 = 0
     while not(86 <= angle() <= 94) :
         if right_dist_g() > left_dist_g() :
-            print("I turn on the right to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("****************************************")
+                print("I turn on the right to avoid the walls")
+                print("****************************************")
             turn(15,0.1)
         else :
-            print("I turn on the left to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("***************************************")
+                print("I turn on the left to avoid the walls.")
+                print("***************************************")  
             turn(-15,0.1)
             
-
 def alignment_minus_90() :
+    print_1 = 0
     while not(-94 <= angle() <= -86) : 
         if right_dist_g() > left_dist_g() :
-            print("I turn on the right to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("****************************************")
+                print("I turn on the right to avoid the walls")
+                print("****************************************")
             turn(15,0.1)
         else :
-            print("I turn on the left to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("***************************************")
+                print("I turn on the left to avoid the walls.")
+                print("***************************************")  
             turn(-15,0.1)
             
-
 def alignment_180() :
+    print_1 = 0
     while (-176 <= angle() <= 176) :
         if right_dist_g() > left_dist_g() :
-            print("I turn on the right to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("****************************************")
+                print("I turn on the right to avoid the walls")
+                print("****************************************")
             turn(15,0.1)
         else :
-            print("I turn on the left to avoid the walls")
+            if print_1 == 0 :
+                print_1 = 1
+                print("***************************************")
+                print("I turn on the left to avoid the walls.")
+                print("***************************************")  
             turn(-15,0.1)
             
 
@@ -128,13 +163,13 @@ def rotate_180() :
         turn(15,0.1)
 
 def semicircle() :
-    if -30 <= angle() <= 30 :
+    if -40 <= angle() <= 40 :
         rotate_180()
-    elif -120 <= angle() <= -60 :
+    elif -130 <= angle() <= -50 :
         rotate_90()
-    elif not(-150 <= angle() <= 150) :
+    elif not(-140 <= angle() <= 140) :
         rotate_0()
-    elif 60 <= angle() <= 120 :
+    elif 50 <= angle() <= 130 :
         rotate_minus_90()
 
 """_____________Token Management Functions______________"""
@@ -150,10 +185,11 @@ Returns : dist (float) is the distance of the closest
 """
 def find_silver_token() :
     dist = 100
+   # rot_y = 360
     for token in R.see() :
         if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER :
             dist = token.dist
-        if  -20 <= token.rot_y <= 20 :
+            #if abs(token.rot_y) < abs(rot_y) :
             rot_y = token.rot_y
     if dist == 100 : 
         return -1, -1
@@ -162,10 +198,11 @@ def find_silver_token() :
 
 def find_golden_token() :
     dist = 100
+    #rot_y = 360
     for  token in R.see() :
         if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD :
             dist = token.dist
-        if  -90 <= token.rot_y <= 90 :
+            #if abs(token.rot_y) < abs(rot_y) :
             rot_y = token.rot_y
     if dist == 100 :
         return -1, -1
@@ -194,34 +231,31 @@ def take_silver_token(d_g,rot) :
             drive(60)
     if front_dist_s() < d_g and abs(rot) <= 90 :   
         if abs(rot) <= a_th :
+            print("----------------------------------------------")
+            print("I am near to a silver token, so I go ahead")
+            print("----------------------------------------------")
             drive(60)
         else :    
             if rot < 0 : # if the robot is not well aligned with the token, we move it on the left or on the right
-                print("Left a bit...")
-                print("I am in silver")
+                print("-------------------------------------------")
+                print("I have detected a silver token on my left")
+                print("I turn on left a bit...")
+                print("-------------------------------------------")
                 turn(-4,0.5)
             elif rot > 0 : 
-                print("Right a bit..")
-                print("I am in silver")
+                print("-------------------------------------------")
+                print("I have detected a silver token on my right")
+                print("I turn on right a bit..")
+                print("-------------------------------------------")
                 turn(4,0.5)
 
 def avoid_golden_token(dist,rot) :
-    if right_dist_g() < 0.7 or left_dist_g() < 0.7:
-        print(rot)
-        if  rot < 0: # if the robot is not well aligned with the token, we move it on the left or on the right
-            print("right a bit...")
-            print("I am in golden")
-            turn(-4, 0.5)
-            
-        elif rot > 0 :
-            print("left a bit...")
-            print("I am in golden")
-            turn(4, 0.5)
-   
     if front_dist_g() < 1 : #the robot has a golden token wall in front it,
-                          #so now it checks if it has to turn left or right
+                            #so now it checks if it has to turn left or right
         if right_dist_g() > left_dist_g() : #turn right
+            print("****************************************************")
             print("I have found a wall in front to me and on my left")
+            print("****************************************************")
             if -100 <= angle() <= -80 :
                 alignment_0()
             elif -10 <= angle() <= 10 :
@@ -229,8 +263,10 @@ def avoid_golden_token(dist,rot) :
             elif 80 <= angle() <= 100 :
                 alignment_0()
             drive(80)
-        else :
+        elif right_dist_g() < left_dist_g():
+            print("*****************************************************")
             print("I have found a wall in front to me and on my right")
+            print("*****************************************************")
             if 80 <= angle() <= 100 :
                 alignment_0()
             elif -10 <= angle() <= 10:
@@ -239,33 +275,54 @@ def avoid_golden_token(dist,rot) :
                 alignment_180()
             else :
                 alignment_90()
-            drive(80)
+            drive(80) 
+    if token_nearness_detection_g() < 0.7 :
+        if  right_dist_g() > left_dist_g(): # if the robot is not well aligned with the token, we move it on the left or on the right
+            print("++++++++++++++++++++++++++++++++++++++++++++++")
+            print("There are golden tokens on my left")
+            print("I have to turn right a bit to avoid them")
+            print("++++++++++++++++++++++++++++++++++++++++++++++")
+            turn(4, 0.5)
+            
+        else :
+            print("++++++++++++++++++++++++++++++++++++++++++++++")
+            print("There are golden tokens on my right")
+            print("I have to turn left a bit to avoid them")
+            print("++++++++++++++++++++++++++++++++++++++++++++++")
+            turn(-4, 0.5)
              
 def front_dist_s():
     dist = 100
     for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER and -35 < token.rot_y < 35 :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER and -40 < token.rot_y < 40 :
+            dist = token.dist
+    return dist
+
+def token_nearness_detection_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -70 < token.rot_y < 70 :
             dist = token.dist
     return dist
 
 def front_dist_g():
     dist = 100
     for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -30 < token.rot_y < 30 :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -20 < token.rot_y < 20 :
             dist = token.dist
     return dist
 
 def right_dist_g() :
     dist = 100
     for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and 80 < token.rot_y < 100 :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and 70 < token.rot_y < 110 :
             dist = token.dist
     return dist
 
 def left_dist_g() :
     dist = 100
     for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -100 < token.rot_y < -80 :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -110 < token.rot_y < -70 :
             dist = token.dist
     return dist
 
