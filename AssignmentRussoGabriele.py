@@ -99,14 +99,14 @@ def alignment_0() :
                 print("****************************************")
                 print("I turn on the right to avoid the walls")
                 print("****************************************")
-            turn(15,0.1)
+            turn(12,0.1)
         else :
             if print_1 == 0 :
                 print_1 = 1
                 print("***************************************")
                 print("I turn on the left to avoid the walls.")
                 print("***************************************")  
-            turn(-15,0.1)
+            turn(-12,0.1)
             
 def alignment_90() :
     print_1 = 0
@@ -117,14 +117,14 @@ def alignment_90() :
                 print("****************************************")
                 print("I turn on the right to avoid the walls")
                 print("****************************************")
-            turn(15,0.1)
+            turn(12,0.1)
         else :
             if print_1 == 0 :
                 print_1 = 1
                 print("***************************************")
                 print("I turn on the left to avoid the walls.")
                 print("***************************************")  
-            turn(-15,0.1)
+            turn(-12,0.1)
             
 def alignment_minus_90() :
     print_1 = 0
@@ -135,14 +135,14 @@ def alignment_minus_90() :
                 print("****************************************")
                 print("I turn on the right to avoid the walls")
                 print("****************************************")
-            turn(15,0.1)
+            turn(12,0.1)
         else :
             if print_1 == 0 :
                 print_1 = 1
                 print("***************************************")
                 print("I turn on the left to avoid the walls.")
                 print("***************************************")  
-            turn(-15,0.1)
+            turn(-12,0.1)
             
 def alignment_180() :
     print_1 = 0
@@ -153,14 +153,14 @@ def alignment_180() :
                 print("****************************************")
                 print("I turn on the right to avoid the walls")
                 print("****************************************")
-            turn(15,0.1)
+            turn(12,0.1)
         else :
             if print_1 == 0 :
                 print_1 = 1
                 print("***************************************")
                 print("I turn on the left to avoid the walls.")
                 print("***************************************")  
-            turn(-15,0.1)
+            turn(-12,0.1)
             
 """
 rotate_0, rotate_90, rotate_180, rotate_minus_90 are similar to 
@@ -173,26 +173,26 @@ rotate again 180 degrees after releasing the silver token behind
 """
 def rotate_0() :
     while not(-4 <= angle() <= 4) :
-        turn(15,0.1)
+        turn(12,0.1)
 
 def rotate_90() :
     while not(86 <= angle() <= 94) :
-        turn(15,0.1)
+        turn(12,0.1)
 
 def rotate_minus_90() :
     while not(-94 <= angle() <= -86) :
-        turn(15,0.1)
+        turn(12,0.1)
 
 def rotate_180() :
     while (-176 <= angle() <= 176) :
-        turn(15,0.1)
+        turn(12,0.1)
 
 def semicircle() :
     if -50 <= angle() <= 50 :
         rotate_180()
     elif -140 <= angle() <= -50 :
         rotate_90()
-    elif not(-130 <= angle() <= 130) :
+    elif not(-120 <= angle() <= 120) :
         rotate_0()
     elif 50 <= angle() <= 140 :
         rotate_minus_90()
@@ -272,7 +272,8 @@ def take_silver_token(d_g,rot) :
             print("----------------------------------------------")
             drive(60)
         else :    
-            if rot < 0 : # if the robot is not well aligned with the token, we move it on the left or on the right
+            if rot < 0 : # if the robot is not well aligned with the token, 
+                         #we move it on the left or on the right
                 print("-------------------------------------------")
                 print("I have detected a silver token on my left")
                 print("I turn on left a bit...")
@@ -298,8 +299,8 @@ token_nearness_detection_g() to detect if the robot is closed to the goldens
 token in a specific angular range.
 """
 def avoid_golden_token(dist,rot) :
-    if front_dist_g() < 1 : #the robot has a golden token wall in front it,
-                            #so now it checks if it has to turn left or right
+    if front_dist_g() < 1.15 : #the robot has a golden token wall in front it,
+                               #so now it checks if it has to turn left or right
         if right_dist_g() > left_dist_g() : #turn right
             print("****************************************************")
             print("I have found a wall in front to me and on my left")
@@ -311,7 +312,7 @@ def avoid_golden_token(dist,rot) :
             elif 80 <= angle() <= 100 :
                 alignment_0()
             drive(60)
-        elif right_dist_g() < left_dist_g():
+        elif right_dist_g() < left_dist_g(): #turn left 
             print("*****************************************************")
             print("I have found a wall in front to me and on my right")
             print("*****************************************************")
@@ -325,7 +326,8 @@ def avoid_golden_token(dist,rot) :
                 alignment_90()
             drive(60) 
     if token_nearness_detection_g() < 0.7 :
-        if  right_dist_g() > left_dist_g(): # if the robot is not well aligned with the token, we move it on the left or on the right
+        if  right_dist_g() > left_dist_g(): # if the robot is not well aligned with the token, 
+                                            #we move it on the left or on the right
             print("++++++++++++++++++++++++++++++++++++++++++++++")
             print("There are golden tokens on my left")
             print("I have to turn right a bit to avoid them")
@@ -337,6 +339,7 @@ def avoid_golden_token(dist,rot) :
             print("I have to turn left a bit to avoid them")
             print("++++++++++++++++++++++++++++++++++++++++++++++")
             turn(-4, 0.5)
+        drive(60)
 
 """----------------------Distance Functions------------------------"""
 """
@@ -393,10 +396,11 @@ def left_dist_g() :
 def main() :
 
     time.sleep(3)
+    drive(60)
+
     while(1) :
         dist_s, rot_s = find_silver_token()
         dist_g, rot_g = find_golden_token()
-        drive(60)
         
         take_silver_token(dist_g,rot_s)
         avoid_golden_token(dist_g,rot_g)
