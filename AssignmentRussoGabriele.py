@@ -309,8 +309,6 @@ def avoid_golden_token(dist,rot) :
                 alignment_0()
             elif -10 <= angle() <= 10 :
                 alignment_90()
-            elif 80 <= angle() <= 100 :
-                alignment_0()
             drive(60)
         elif right_dist_g() < left_dist_g(): #turn left 
             print("*****************************************************")
