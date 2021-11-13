@@ -23,14 +23,14 @@ Afterwards go into 'robot-sim', where there is the file 'run.py', and download r
 
 <pre>
     <code>
-        git clone https://github.com/simone-contorno/rt_assignment_1
+        git clone https://github.com/GabrieleRusso11/RT_Assignment1_Russo_Gabriele
     </code>
 </pre>
 
-Now, to run 'assignment.py' type:
+Now, to run 'AssignmentRussoGabriele.py' type:
 
 <pre>
     <code>
-        python2 run.py rt_assignment_1/assignment.py
+        python2 run.py AssignmentRussoGabriele.py
     </code>
 </pre>
