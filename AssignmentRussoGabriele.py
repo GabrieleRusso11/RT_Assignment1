@@ -23,7 +23,7 @@ d_th = 0.4
 """ Instance of the class Robot """
 R = Robot()
 
-"""-------------------Robot Moving Functions--------------------"""
+"""-------------------Robot Movement Functions--------------------"""
 """
 drive is a function used to set a linear velocity
 Arg : speed (init) is the speed of the wheels
