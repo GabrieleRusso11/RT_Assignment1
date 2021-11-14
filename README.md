@@ -1,36 +1,4 @@
-# RT_Assignment1_Russo_Gabriele
-First Research Track assignment
-<a name="installation"></a>
-### Installation and Execution
+# Gabriele Russo's first assignment for the Research Track 1 course (Mat. 5180813)
 
-First of all install the simulated environment from github opening the terminal and typing:
 
-<pre>
-    <code>
-        git clone https://github.com/CarmineD8/python_simulator.git
-    </code>
-</pre>
-
-After, go in the folder 'python_simulator' and type:
-
-<pre>
-    <code>
-        git checkout assignment
-    </code>
-</pre>
-
-Afterwards go into 'robot-sim', where there is the file 'run.py', and download rt_assignment_1 typing:
-
-<pre>
-    <code>
-        git clone https://github.com/GabrieleRusso11/RT_Assignment1_Russo_Gabriele
-    </code>
-</pre>
-
-Now, to run 'AssignmentRussoGabriele.py' type:
-
-<pre>
-    <code>
-        python2 run.py AssignmentRussoGabriele.py
-    </code>
-</pre>
+![Gabriele_Russo_flowchart](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/Gabriele_Russo_flowchart.png)
