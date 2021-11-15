@@ -26,8 +26,8 @@ Once it grabs a silver token it must turn 180 degrees and so release the silver 
 My program achieve the aim using four principal categories of functions :
 
 * Robot Movement Functions
-* Orientation Functions
-* Distance Functions 
+* Distance Functions
+* Orientation Functions 
 * Token Management Functions
 
 ### Robot Movement Functions
@@ -66,6 +66,30 @@ def turn(speed,seconds) :
 ```
 This function let the robot to turn towards a generic direction.
 
+### Distance functions
+
+In this category there are the functions that detect the linear frontal and lateral distance between the robot and the silver/golden tokens.
+
+`front_dist_s()` detect the frontal distance from a silver token.
+
+![frontdists](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/frontdists.png)
+
+`front_dist_g()` detect the frontal distance from a golden token.
+
+![frontdistg](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/frontdistg.png)
+
+`right_dist_g()` detect the right lateral distance from a golden token.
+
+![rightdistg](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/rightdistg.png)
+
+`left_dist_g()` detect the left lateral distance from a golden token.
+
+![leftdistg](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/leftdistg.png)
+
+`token_nearness_detection_g()` is really similar to the `front_dist_g()` function but with a bigger angular range, in ordder to detect better the golden tokens to avoid.
+
+![nearnessdetection](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/nearnessdetection.png)
+
 ### Orientation Functions
 
 In this category there are functions that use the library function `heading` to align the robot to a specific orientation.
@@ -103,11 +127,35 @@ Then there are the `alignment_0()`, `alignment_90()`, `alignment_minus_90()` and
 
 ![alignment180](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/alignment180.png)
 
-### Distance functions
+### Token Management Functions
 
+In this category there are four functions.
+the first two functions are used to find the linear and angular distance from the closest silver/golden token.
 
+`find_silver_token()` detect the linear and angular distance from the closest silver token.
 
-## Flowchart
+![findsilver](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/findsilver.png)
+
+`find_golden_token()` detect the linear and angular distance from the closest golden token.
+
+![findgolden](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/findgolden.png)
+
+The other two functions are `take_silver_token(d_g,rot)` and `avoid_golden_token(dist,rot)`.
+
+`take_silver_token(d_g,rot)` is the function that accomplish the aim of detect and take a silver token and put it behind itself.
+It uses firstly the function `front_dist_s()` to detect the silver token, secondly the Robot library functions `grab()` and `release()` to grab and release the silver token and finally, it uses two times the function `semicircle()` to put the silver token bihind itself and to return in the previous position.
+
+![takesilver](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/takesilver.jpg)
+
+`avoid_golden_token(dist,rot)` is the function taht accomplish the aim of avoid the golden token walls,It is divided in two part.
+The first part let the robot to detect if there is a wall in front it and on its right or left using the distance functions `front_dist_g()`, `right_dist_g`, and `left_dist_g`, then it use the alignment functions to travel the bend in the correct direction.
+The second part let the robot to detect and avoid the golden tokens (this part is not used in the bends, it is used in the straight paths) using the functions `token_nearness_detection_g`, `right_dist_g`, and `left_dist_g`.
+
+![avoidgolden](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/avoidgolden.png)
+
+## Complete Flowchart
+### Legend to read the flowchart
+![legend](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/legend.png)
 
 ![Gabriele_Russo_flowchart](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/Gabriele_Russo_flowchart.png)
 
