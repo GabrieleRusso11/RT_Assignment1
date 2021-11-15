@@ -23,12 +23,12 @@ Once it grabs a silver token it must turn 180 degrees and so release the silver 
 
 ## How it works 
 
-My code achieve the aim using four principal categories of functions :
+My program achieve the aim using four principal categories of functions :
 
 * Robot Movement Functions
 * Orientation Functions
+* Distance Functions 
 * Token Management Functions
-* Distance Functions
 
 ### Robot Movement Functions
 
@@ -84,6 +84,26 @@ def angle() :
 In this category there is the `semicircle()` function that thanks to the `rotate_0()`, `rotate_90()`, `rotate_minus_90()` and `rotate_180()` functions let the robot to turn 180 degrees in the correct direction seeing in which position the robot is in that precise instant and turning in the opposite angular position :
 
 ![semicircle_rotate_functions](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/semicircle_rotate_functions.png)
+
+Then there are the `alignment_0()`, `alignment_90()`, `alignment_minus_90()` and `alignment_180()` that conceptually are very similar to the rotate functions but in this case they are used to detecd whether there are a wall on the left or on the right and turn 90 degrees in the correct direction ( i.e. the direction where there are not walls ). So in a nutshell the alignment functions are used to let the robot to go around the bends. (the function flowcharts are shown below).
+
+`alignment_0()` :
+
+![alignment0](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/alignment0.png)
+
+`alignment_90()` :
+
+![alignment90](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/alignment90.png)
+
+`alignment_minus_90()` :
+
+![alignmentminus90](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/alignmentminus90.png)
+
+`alignment_180()` :
+
+![alignment180](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/alignment180.png)
+
+### Distance functions
 
 
 
