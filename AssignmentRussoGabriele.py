@@ -69,6 +69,58 @@ def turn(speed,seconds) :
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
 
+"""----------------------Distance Functions------------------------"""
+"""
+front_dist_s returns the frontal distance from a silver token
+
+"""           
+def front_dist_s():
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER and -40 < token.rot_y < 40 :
+            dist = token.dist
+    return dist
+"""
+token_nearness_detection_g is really similar to the front_dist_g 
+function but with a bigger angular range, in ordder to detect better 
+the golden tokens to avoid
+"""
+def token_nearness_detection_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -70 < token.rot_y < 70 :
+            dist = token.dist
+    return dist
+"""
+front_dist_g returns the frontal distance from a golden token
+in order to detect if there is a wall in front the robot
+
+"""      
+def front_dist_g():
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -20 < token.rot_y < 20 :
+            dist = token.dist
+    return dist
+"""
+right_dist_g and left_dist_g returns the lateral distance from a golden token
+in order to detect if there are walls on the robot right side or on the left side
+
+"""      
+def right_dist_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and 70 < token.rot_y < 110 :
+            dist = token.dist
+    return dist
+    
+def left_dist_g() :
+    dist = 100
+    for token in R.see() :
+        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -110 < token.rot_y < -70 :
+            dist = token.dist
+    return dist
+
 """---------------------Orientation Functions-----------------------"""
 """
 Angle is a function which returns the robot angular position 
@@ -339,58 +391,6 @@ def avoid_golden_token(dist,rot) :
             turn(-4, 0.5)
         drive(60)
 
-"""----------------------Distance Functions------------------------"""
-"""
-front_dist_s returns the frontal distance from a silver token
-
-"""           
-def front_dist_s():
-    dist = 100
-    for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_SILVER and -40 < token.rot_y < 40 :
-            dist = token.dist
-    return dist
-"""
-token_nearness_detection_g is really similar to the front_dist_g 
-function but with a bigger angular range, in ordder to detect better 
-the golden tokens to avoid
-"""
-def token_nearness_detection_g() :
-    dist = 100
-    for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -70 < token.rot_y < 70 :
-            dist = token.dist
-    return dist
-"""
-front_dist_g returns the frontal distance from a golden token
-in order to detect if there is a wall in front the robot
-
-"""      
-def front_dist_g():
-    dist = 100
-    for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -20 < token.rot_y < 20 :
-            dist = token.dist
-    return dist
-"""
-right_dist_g and left_dist_g returns the lateral distance from a golden token
-in order to detect if there are walls on the robot right side or on the left side
-
-"""      
-def right_dist_g() :
-    dist = 100
-    for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and 70 < token.rot_y < 110 :
-            dist = token.dist
-    return dist
-    
-def left_dist_g() :
-    dist = 100
-    for token in R.see() :
-        if token.dist < dist and token.info.marker_type is MARKER_TOKEN_GOLD and -110 < token.rot_y < -70 :
-            dist = token.dist
-    return dist
-
 def main() :
 
     time.sleep(3)
@@ -404,5 +404,4 @@ def main() :
         avoid_golden_token(dist_g,rot_g)
         time.sleep(0.2)
         
-main()
-    
+main()  
