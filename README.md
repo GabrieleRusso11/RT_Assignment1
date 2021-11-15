@@ -1,9 +1,9 @@
 # Gabriele Russo's first assignment for the Research Track 1 course (Mat. 5180813)
 
-## Installing and running
+## Installation and how to run
 The simulator requires a Python 2.7 installation, the [pygame](http://pygame.org/) library, [PyPyBox2D](https://pypi.python.org/pypi/pypybox2d/2.1-r331), and [PyYAML](https://pypi.python.org/pypi/PyYAML/).
 
-Once everything is installed, run the progamm by typing on the shell :
+Once everything is installed, run the progam by typing on the shell :
 
 ```
  python2 run.py AssignmentRussoGabriele.py 
@@ -149,7 +149,7 @@ It uses firstly the function `front_dist_s()` to detect the silver token, second
 
 `avoid_golden_token(dist,rot)` is the function taht accomplish the aim of avoid the golden token walls,It is divided in two part.
 The first part let the robot to detect if there is a wall in front it and on its right or left using the distance functions `front_dist_g()`, `right_dist_g`, and `left_dist_g`, then it use the alignment functions to travel the bend in the correct direction.
-The second part let the robot to detect and avoid the golden tokens (this part is not used in the bends, it is used in the straight paths) using the functions `token_nearness_detection_g`, `right_dist_g`, and `left_dist_g`.
+The second part let the robot to detect and avoid the golden tokens (this part is not used in the bends, it is used in the straight paths or in general situations where there isn't a right angle bend) using the functions `token_nearness_detection_g`, `right_dist_g`, and `left_dist_g`.
 
 ![avoidgolden](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/images/avoidgolden.png)
 
@@ -160,3 +160,6 @@ The second part let the robot to detect and avoid the golden tokens (this part i
 ![Gabriele_Russo_flowchart](https://github.com/GabrieleRusso11/RT_Assignment1/blob/main/Gabriele_Russo_flowchart.png)
 
 ## Possible Improvements
+The orientation functions category can be improved in order to rotate the robot and to let it to go around the bends with higher speed without increase the angular position error.
+It can be done evaluating the error through the difference between the desired angular position and the effective angular position. 
+Compensating this error the robot can become more precise and fast.
