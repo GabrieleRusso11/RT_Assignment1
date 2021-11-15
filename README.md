@@ -162,4 +162,4 @@ The second part let the robot to detect and avoid the golden tokens (this part i
 ## Possible Improvements
 The orientation functions category can be improved in order to rotate the robot and to let it to go around the bends with higher speed without increase the angular position error.
 It can be done evaluating the error through the difference between the desired angular position and the effective angular position. 
-Compensating this error the robot can become more precise and fast.
+By compensating this error the robot can become more precise and fast.
